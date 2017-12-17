@@ -1,3 +1,23 @@
+/**
+ * MIT License
+ Copyright (c) 2017 deepakshajan
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+ */
+
 let assert = require('chai').assert;
 let expect = require('chai').expect;
 let sinon = require('sinon');
@@ -764,12 +784,12 @@ describe('Tests executed on the game.js file', function () {
                     setTimerSpy.restore();
                 });
                 it('Should tick the timers', function () {
-                   let spy = sinon.spy(nmsp.gamePiece, 'move');
-                   nmsp.playStarted = false;
-                   nmsp.gamePiece.setMovementDirection('left');
-                   clock.tick(100);
-                   assert.isTrue(spy.callCount > 0);
-                   spy.restore();
+                    let spy = sinon.spy(nmsp.gamePiece, 'move');
+                    nmsp.playStarted = false;
+                    nmsp.gamePiece.setMovementDirection('left');
+                    clock.tick(100);
+                    assert.isTrue(spy.callCount > 0);
+                    spy.restore();
                 });
                 it('Should start play if needed', function () {
                     let startPlaySpy = sinon.spy(nmsp,'startPlay');
@@ -1376,12 +1396,12 @@ describe('Tests executed on the game.js file', function () {
                                 assert.strictEqual(gamePiece.futureDirection,'right');
                             });
                             it('Should move to reverse direction when in T junction and future direction is not possible', function () {
-                               let gamePiece = nmsp.gamePiece;
-                               gamePiece.x = 190;gamePiece.y = 370;
-                               gamePiece.currentDirection = gamePiece.futureDirection = 'up';
-                               gamePiece.move();
-                               assert.strictEqual(gamePiece.currentDirection, 'down');
-                               assert.strictEqual(gamePiece.futureDirection, 'down');
+                                let gamePiece = nmsp.gamePiece;
+                                gamePiece.x = 190;gamePiece.y = 370;
+                                gamePiece.currentDirection = gamePiece.futureDirection = 'up';
+                                gamePiece.move();
+                                assert.strictEqual(gamePiece.currentDirection, 'down');
+                                assert.strictEqual(gamePiece.futureDirection, 'down');
                             });
                         });
                         describe('Test when gamePiece is in terminal cell', function () {
