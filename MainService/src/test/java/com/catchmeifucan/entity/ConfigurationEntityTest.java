@@ -34,6 +34,7 @@ import org.springframework.util.Assert;
 
 /**
  * Unit test cases for class {@link ConfigurationEntity}
+ * <p>Only to be used as a reference</p>
  * @author Deepak Shajan
  */
 @RunWith(SpringRunner.class)

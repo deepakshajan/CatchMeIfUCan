@@ -19,6 +19,7 @@
  */
 
 let cmiuc = {};
+module.exports = cmiuc;
 
 (function (nmsp) {
 
@@ -137,6 +138,9 @@ let cmiuc = {};
 
     nmsp.Piece.prototype.takeOneStep = function (direction) {
 
+        if(!(direction === 'left' || direction === 'right' || direction === 'up' || direction === 'down'))
+            return false;
+
         let xOriginal = this.x, yOriginal = this.y;
         let x = xOriginal, y = yOriginal;
         let speed = nmsp.config.gamePieceStep;
@@ -177,6 +181,7 @@ let cmiuc = {};
             case "down":
                 return this.futureDirection === "up";
         }
+        return false;
     };
 
     nmsp.Piece.prototype.reverseDirection = function () {
@@ -204,6 +209,7 @@ let cmiuc = {};
         } else if ((layout[i][j - 1] === '1' || layout[i][j + 1] === '1') && layout[i][j - 1] !== layout[i][j + 1]) {
             return ((i !== 0 && layout[i - 1][j] === '1') && (i !== len && layout[i + 1][j] === '0')) || ((i !== 0 && layout[i - 1][j] === '0') && (i !== len && layout[i + 1][j] === '1'));
         }
+        return false;
     };
 
     nmsp.Piece.prototype.isExactlyInBentCell = function () {
@@ -227,6 +233,7 @@ let cmiuc = {};
         let bottomLeftCorner = [leftEdge, bottomEdge];
         if (this.checkForCellEquality(nmsp.util.getIJFromXY(bottomLeftCorner), nmsp.util.getIJFromXY(topRightCorner)))
             return (nmsp.util.isXYInTerminalCell(center) && nmsp.util.isXYInTerminalCell(topRightCorner) && nmsp.util.isXYInTerminalCell(bottomLeftCorner));
+        return false;
     };
 
     nmsp.Piece.prototype.isExactlyInJunctionCell = function () {
@@ -237,6 +244,7 @@ let cmiuc = {};
         let bottomLeftCorner = [leftEdge, bottomEdge];
         if (this.checkForCellEquality(nmsp.util.getIJFromXY(bottomLeftCorner), nmsp.util.getIJFromXY(topRightCorner)))
             return (nmsp.util.isXYInJunctionCell(center) && nmsp.util.isXYInJunctionCell(topRightCorner) && nmsp.util.isXYInJunctionCell(bottomLeftCorner));
+        return false;
     };
 
     nmsp.Piece.prototype.isCurrentDirectionPossible = function () {
@@ -331,8 +339,8 @@ let cmiuc = {};
 
     nmsp.Piece.prototype.setMovementDirection = function (direction) {
         this.futureDirection = direction;
-        clearInterval(nmsp.gamePieceTimer);
-        nmsp.gamePieceTimer = setInterval(() => {
+        window.clearInterval(nmsp.gamePieceTimer);
+        nmsp.gamePieceTimer = window.setInterval(() => {
             this.move();
         }, nmsp.config.gamePieceStepInterval - ((nmsp.level - 1) * nmsp.config.levelUpSpeedChangeRate));
         if (!nmsp.playStarted)
@@ -448,6 +456,20 @@ let cmiuc = {};
         opponentPiece.updatePathArray = nmsp.opponentPiece.updatePathArray;
     };
 
+    nmsp.createOpponentPiece = (x, y) => {
+        let ctx = nmsp.canvas.getContext("2d");
+        ctx.beginPath();
+        ctx.arc(x, y, nmsp.config.opponentPieceRadius, 0, 2 * Math.PI);
+        ctx.fillStyle = nmsp.config.opponentPieceColour;
+        ctx.fill();
+        ctx.stroke();
+        let opponentPiece = new nmsp.Piece(x, y, nmsp.config.opponentPieceRadius, nmsp.config.opponentPieceColour);
+        opponentPiece.ctx = ctx;
+        opponentPiece.minDistanceToGamePiece = nmsp.config.highValue;
+        nmsp.bindOpponentPieceFunctions(opponentPiece);
+        return opponentPiece;
+    };
+
     nmsp.addOpponent = function (x, y) {
         let opponent = nmsp.createOpponentPiece(x, y);
         let ctx = opponent.ctx;
@@ -480,6 +502,7 @@ let cmiuc = {};
             return true;
         else if (i < 0 || j < 0 || layout[i][j] === '0')
             return true;
+        return false;
     };
 
     nmsp.util.getIJFromPiece = function (piece) {
@@ -554,8 +577,8 @@ let cmiuc = {};
     };
 
     nmsp.util.levelUp = function () {
-        clearInterval(nmsp.gamePieceTimer);
-        clearInterval(nmsp.opponentTimer);
+        window.clearInterval(nmsp.gamePieceTimer);
+        window.clearInterval(nmsp.opponentTimer);
         nmsp.timer.push(nmsp.gamePieceTimer = setInterval(() => {
             nmsp.gamePiece.move();
         }, nmsp.config.gamePieceStepInterval - ((nmsp.level - 1) * nmsp.config.levelUpSpeedChangeRate)));
@@ -698,20 +721,6 @@ let cmiuc = {};
                 this.currentDirection = this.futureDirection;
 
             this.takeOneStep(this.currentDirection);
-        };
-
-        nmsp.createOpponentPiece = (x, y) => {
-            let ctx = this.canvas.getContext("2d");
-            ctx.beginPath();
-            ctx.arc(x, y, this.config.opponentPieceRadius, 0, 2 * Math.PI);
-            ctx.fillStyle = this.config.opponentPieceColour;
-            ctx.fill();
-            ctx.stroke();
-            let opponentPiece = new this.Piece(x, y, this.config.opponentPieceRadius, this.config.opponentPieceColour);
-            opponentPiece.ctx = ctx;
-            opponentPiece.minDistanceToGamePiece = nmsp.config.highValue;
-            this.bindOpponentPieceFunctions(opponentPiece);
-            return opponentPiece;
         };
 
         this.opponentPiece.move = function () {

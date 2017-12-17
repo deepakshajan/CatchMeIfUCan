@@ -50,7 +50,7 @@ SOFTWARE.
     </div>
 </div>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}\js\game.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}\js\game.min.js"></script>
 
 <script>
     cmiuc.init(${configuration});
