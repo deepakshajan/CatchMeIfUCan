@@ -19,7 +19,7 @@ A simple endless game in which the goal is to survive without being captured by 
  
  <h4>Gameplay Details</h4>
  
- As a player you aim is to avoid being caught by the opponents. You are said to be caught if any of the opponent piece touch your piece(gamepiece). As time progress the speed of the gameplay will gradually increase as we go up each level.Once caught just refresh your browser tab(press f5) to restart. The movement of the gamepiece might be a little tricky at first. But I am sure someone as cleaver as you will have no problems adapting to it.
+ As a player you aim is to avoid being caught by the opponents. You are said to be caught if any of the opponent piece touch your piece(gamepiece). As time progress the speed of the gameplay will gradually increase as we go up each level.Once caught just refresh your browser tab(press f5) to restart. The movement of the gamepiece might be a little tricky at first. But I am sure someone as clever as you will have no problems adapting to it.
  
  <h4>Customizations</h4>
  
