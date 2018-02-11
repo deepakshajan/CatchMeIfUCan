@@ -22,7 +22,7 @@ module.exports = function(grunt) {
     });
 
     // Load the plugin that provides the "uglify" task.
-    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-uglify-es');
     // Load the plugin that removes the line "module.exports = cmiuc;"
     grunt.loadNpmTasks('grunt-line-remover');
 
