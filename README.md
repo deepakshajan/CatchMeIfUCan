@@ -4,7 +4,7 @@ A simple endless game in which the goal is to survive without being captured by 
  <h4>Prerequisites</h4>
  The following softwares are required inorder to deploy the application
  
- - Maven 
+ - Maven or Gradle
  - Java(Preferabily 8)
  - Node
  - npm
@@ -12,10 +12,10 @@ A simple endless game in which the goal is to survive without being captured by 
  <h4>Steps to deploy</h4>
  
  - Clone the repository into local
-- Run the StartServiceCluster.bat file
+- Run the StartServiceCluster(Maven).bat/StartServiceCluster(Gradle).bat file depending on which build tool you prefer
 - This will deploy each of the springboot microservices in order
 - Wait until the browser window opens up and the game is loaded in a new browser tab
-- <b>Note :</b> If the file is being run for the first time, there will be a delay in start(may take upto 2 mins). You will have to refresh the browser tab until the game loads.
+- <b>Note :</b> If the file is being run for the first time, there will be a delay in start(may take upto 5 mins). You will have to refresh the browser tab until the game loads.
  
  <h4>Gameplay Details</h4>
  

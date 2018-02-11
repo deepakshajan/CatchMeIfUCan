@@ -1,0 +1,63 @@
+plugins {
+    id 'org.springframework.boot' version '1.5.9.RELEASE'
+    id 'com.moowork.node' version '1.2.0'
+    id 'com.moowork.grunt' version '1.2.0'
+}
+
+apply plugin : 'java'
+
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+node {
+    version = '8.9.3'
+    download = true
+}
+
+task runNpmTasks(type: NpmTask) {
+    File packageJsonFile = file('package.json')
+    def parsedPackageJson = new groovy.json.JsonSlurper().parse(packageJsonFile)
+    def devDependencies = parsedPackageJson.devDependencies
+    devDependencies.each {
+            args = ['install', '--save-dev', it.key] // then it needs to be installed
+    }
+    return
+}
+
+task runNpmTest(type: NpmTask) {
+        args = ['test']
+}
+
+task runGruntTasks(type: GruntTask) {
+    //keep this empty task to execute all the grunt tasks defined in gruntFile.js
+}
+
+clean {
+    dependsOn runGruntTasks //runs the grunt tasks before executing bootRun task
+}
+
+test {
+    dependsOn runNpmTest //execute all the javascript unit tests
+}
+
+runGruntTasks {
+    dependsOn installGrunt
+}
+
+grunt_build {
+    dependsOn runNpmTasks
+}
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    runtime 'org.springframework.boot:spring-boot-devtools'
+    runtime 'org.springframework.boot:spring-boot-starter-tomcat'
+    compile 'javax.servlet:jstl'
+    compile 'org.apache.tomcat.embed:tomcat-embed-jasper'
+    runtime 'org.eclipse.jdt.core.compiler:ecj:4.6.1'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    compile 'com.google.code.gson:gson:2.8.1'
+}
