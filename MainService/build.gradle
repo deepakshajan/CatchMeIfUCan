@@ -9,7 +9,6 @@ apply plugin : 'java'
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 node {
@@ -17,14 +16,15 @@ node {
     download = true
 }
 
-task runNpmTasks(type: NpmTask) {
+task runNpmTasksWrapper {
     File packageJsonFile = file('package.json')
     def parsedPackageJson = new groovy.json.JsonSlurper().parse(packageJsonFile)
     def devDependencies = parsedPackageJson.devDependencies
-    devDependencies.each {
-            args = ['install', '--save-dev', it.key] // then it needs to be installed
+    devDependencies.each { devDependency ->
+        task "runNpmTasks${devDependency}"(type: NpmTask) {
+            args = ['install', '--save-dev', devDependency.key]
+        }
     }
-    return
 }
 
 task runNpmTest(type: NpmTask) {
@@ -43,12 +43,16 @@ test {
     dependsOn runNpmTest //execute all the javascript unit tests
 }
 
+installGrunt {
+    dependsOn runNpmTasksWrapper
+}
+
 runGruntTasks {
     dependsOn installGrunt
 }
 
 grunt_build {
-    dependsOn runNpmTasks
+    dependsOn runNpmTasksWrapper
 }
 
 dependencies {
