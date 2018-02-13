@@ -16,44 +16,20 @@ node {
     download = true
 }
 
-task runNpmTasksWrapper {
-    File packageJsonFile = file('package.json')
-    def parsedPackageJson = new groovy.json.JsonSlurper().parse(packageJsonFile)
-    def devDependencies = parsedPackageJson.devDependencies
-    devDependencies.each { devDependency ->
-        task "runNpmTasks${devDependency}"(type: NpmTask) {
-            args = ['install', '--save-dev', devDependency.key]
-        }
-    }
-}
 
-task runNpmTest(type: NpmTask) {
-        args = ['test']
-}
-
-task runGruntTasks(type: GruntTask) {
+task runGruntTasks(type: GruntTask, dependsOn:[installGrunt]) {
     //keep this empty task to execute all the grunt tasks defined in gruntFile.js
 }
 
-clean {
-    dependsOn runGruntTasks //runs the grunt tasks before executing bootRun task
+installGrunt.dependsOn nodeSetup,npmSetup,npmInstall
+
+task runNpmTest(type: NpmTask, dependsOn:[nodeSetup,npmInstall,npmSetup]) {
+    args = ['test']
 }
 
-test {
-    dependsOn runNpmTest //execute all the javascript unit tests
-}
+clean.dependsOn runGruntTasks
+test.dependsOn runNpmTest
 
-installGrunt {
-    dependsOn runNpmTasksWrapper
-}
-
-runGruntTasks {
-    dependsOn installGrunt
-}
-
-grunt_build {
-    dependsOn runNpmTasksWrapper
-}
 
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
