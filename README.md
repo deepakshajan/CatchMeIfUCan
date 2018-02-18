@@ -4,8 +4,8 @@ A simple endless game in which the goal is to survive without being captured by 
  <h4>Prerequisites</h4>
  The following softwares are required inorder to deploy the application
  
- - Maven or Gradle
- - Java(Preferabily 8)
+ - Maven or Gradle(gradle version 4.5.1)
+ - Java(version 9)
  - Node
  - npm
  

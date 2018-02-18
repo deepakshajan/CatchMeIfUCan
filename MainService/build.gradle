@@ -33,7 +33,6 @@ test.dependsOn runNpmTest
 
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
-    runtime 'org.springframework.boot:spring-boot-devtools'
     runtime 'org.springframework.boot:spring-boot-starter-tomcat'
     compile 'javax.servlet:jstl'
     compile 'org.apache.tomcat.embed:tomcat-embed-jasper'
